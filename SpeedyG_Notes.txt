@@ -4,7 +4,7 @@ Commands:
 			-> command = Note Height
 			-> ii = Instrument [00-7F]
 			-> dd = Duration
-				[Note: If > $80, it is written as an 11-bit value - bit 7 of byte two is ignored]
+				[Note: If > $80, it is written as an 13-bit value - bit 7 of byte two is ignored]
 				[ex. $c0 -> $81,$40 | $180 -> $83,$00 | $300 -> $86,$00]
 			-> ss = Note Stop value (stop after Duration - ss ticks)
 80			Track End [Music]
