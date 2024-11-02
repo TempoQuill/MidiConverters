@@ -35,6 +35,15 @@ Despite its name, this tool converts songs from Sonic Spinball on the Sega Maste
 
 I did a quick hack of de2mid to support Sonic Spinball's sound format, which is the cause of the name. I kept the tool for historical purposes. You should use smps2mid if you want to convert songs from Sonic Spinball (8-bit) to MIDI.
 
+## dynamix_mus2mid
+This tool converts music from early Dynamix games to MIDI.
+
+I wrote this tool for "Spikey" from the *Sierra Music and Memories* Discord channel, for converting music from "David Wolf: Seceta Agent".
+
+It should be noted that "David Wolf" has songs inside `MUS` files. Each `MUS` file contains the same song in multiple variants (beeper, Tandy, AdLib, ...).
+The format is just Dynamix' typical `RES` archive format, which [is documented here](https://moddingwiki.shikadi.net/wiki/RES_Format_(Stellar_7)).
+The tool requires pre-extracted songs. All sound variants use the same format and are supported by the tool.
+
 ## eash2mid
 This tool converts songs from MegaDrive ROMs that uses the EA/Steve Hayes sound driver to MIDI.
 
@@ -79,6 +88,8 @@ For sequence data, the tool tries to detect the pointer format, which is differe
 
 The GEMS sound driver is commonly found in MegaDrive games developed in the U.S.
 
+**Note:** The tool requires pre-extracted GEMS data files. (sequences, instruments, etc.) It does not work on raw MegaDrive ROMs.
+
 ## gmd2mid
 This tool converts songs from PC-98 games that use the GMD format to MIDI.
 
@@ -94,6 +105,16 @@ This tool converts songs from MegaDrive games that use the GRC sound driver to M
 
 Initially I wrote this tool to get MIDIs from songs of Decap Attack, which only used FM channels. The current version supports FM, PSG and DAC channels.  
 The tool is written based on a sound driver disassembly of Decap Attack and Socket.
+
+Example calls:
+
+```
+grc2mid -mus "Decap Attack (UE) [!].bin" 039000
+grc2mid -ins "Decap Attack (UE) [!].bin" 0384C6
+
+grc2mid -mus "Socket (W) [!].bin" 03392A
+grc2mid -ins "Socket (W) [!].bin" 033214
+```
 
 ## HMI2MID
 This is a quick and dirty Visual Basic 6 tool to convert HMI files to standard MIDIs.
@@ -122,11 +143,23 @@ This tool converts IT modules to MIDI.
 
 I wasn't satisfied with OpenMPT's MIDI exporting function, because it didn't preserve volume and panning information, so I wrote this. (There was also something I didn't like about LifeAmp's conversion.)
 
-## konami2mid
-This tool converts songs from TMNT: Hyperstone Heist to MIDI. It probably works with other MegaDrive Konami games as well.
+## konamimd2mid
+This tool converts songs from MegaDrive Konami games to MIDI.
 
 The tool can export MIDIs and dump instruments to GYB files.  
 It was written based on a sound driver disassembly of TMNT: Hyperstone Heist.
+It was verified to work with Rocket Knight Adventures as well.
+
+Example calls:
+
+```
+konamimd2mid -mus "Teenage Mutant Ninja Turtles - Return of the Shredder (J).bin" 0D3746 0F82D8
+konamimd2mid -mus "Teenage Mutant Ninja Turtles - The Hyperstone Heist (U) [!].bin" 0D37A4 0F82D8
+konamimd2mid -ins "Teenage Mutant Ninja Turtles - The Hyperstone Heist (U) [!].bin" 0D0348 x
+
+konamimd2mid -mus -htr "Rocket Knight Adventures (U) [!].bin" 0D02F8 0F9A51
+konamimd2mid -ins "Rocket Knight Adventures (U) [!].bin" 0D2448 x
+```
 
 ## Lem3DMid
 This converts songs from Lemmings 3D to MIDI.
@@ -170,6 +203,11 @@ The tool needs "RO" files ripped from ScummVM's RAM as I couldn't figure out the
 The "RO" signature must be at byte 0x0C. (I apparently ripped some bytes from the memory block header.)  
 MI1-Midi_Data.7z contains the files that I used with the converter.
 
+## mid2syx
+This tool extracts SysEx messages from standard MID files and saves them as a separate SYX file.
+
+Note: The tool goes through the MID file by-track. Thus when SysEx messages are spread across multiple tracks, they will NOT be sorted by time.
+
 ## mmd2mid
 This tool converts M.M.D. songs to standard MIDIs.
 
@@ -177,7 +215,7 @@ M.M.D. is Masahiro Kajihara's MIDI driver.
 The music from Studio Twinkle's "Mime" was enough of a reason for researching the format.
 
 As it turned out, MMD is basically a size-optimized version of the RCP format.
-And so both, the disassembling the MMD driver and writing the converter tool was done pretty quickly.
+And so both, disassembling the MMD driver and writing the converter tool was done pretty quickly.
 
 ## mmu2mid
 This tool converts Wolfteam MMU music files to standard MIDIs.
@@ -356,6 +394,7 @@ For Wolfteam MegaDrive games with PCM drums, it can autodetect the song list and
 
 ## wtmf2mid
 This tool converts Wolfteam MF/MU music files to standard MIDIs.
+The same format was also used by games developed by Melody (MFD.COM sound driver), as well as Studio Twinkle's "Twilight".
 
 I initially made this tool to get MIDIs of songs from Arcus Odyssey (because its MT-32 soundtrack is awesome).
 I disassembled a few sound drivers during the development of this tool: Arcus Odyssey, D: European Mirage, Span of Dream.
